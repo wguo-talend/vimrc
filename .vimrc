@@ -1,3 +1,12 @@
+" Modeline and Notes {
+" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
+"
+" @ThomasAlcala's vim configuration.
+" }
+"
+"
+set nocompatible
+
 " sensible.vim - Defaults everyone can agree on
 " Maintainer:   Tim Pope <http://tpo.pe/>
 " Version:      1.2
@@ -99,3 +108,41 @@ if empty(mapcheck('<C-W>', 'i'))
 endif
 
 " vim:set ft=vim et sw=2:
+
+" -----------
+" Environment
+" -----------
+
+" Encoding
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
+set ttyfast
+
+" Tabs. May be overridden by autocmd rules
+set tabstop=4
+set softtabstop=0
+set shiftwidth=4
+set expandtab
+
+" Map leader to ,
+let mapleader=','
+
+" Enable hidden buffers
+set hidden
+
+" Searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+silent function! OSX()
+    return has('macunix')
+endfunction
+silent function! LINUX()
+    return has('unix') && !has('macunix') && !has('win32unix')
+endfunction
+silent function! WINDOWS()
+    return  (has('win32') || has('win64'))
+endfunction
