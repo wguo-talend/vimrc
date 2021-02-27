@@ -1,11 +1,11 @@
 " sensible.vim - Defaults everyone can agree on
 " Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.2
+" Version:      1.1
 
-if exists('g:loaded_sensible') || &compatible
+if &compatible
   finish
 else
-  let g:loaded_sensible = 'yes'
+  let g:loaded_sensible = 1
 endif
 
 if has('autocmd')
@@ -24,19 +24,18 @@ set smarttab
 
 set nrformats-=octal
 
-if !has('nvim') && &ttimeoutlen == -1
-  set ttimeout
-  set ttimeoutlen=100
-endif
+set ttimeout
+set ttimeoutlen=100
 
 set incsearch
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 
 set laststatus=2
 set ruler
+set showcmd
 set wildmenu
 
 if !&scrolloff
@@ -60,14 +59,15 @@ if v:version > 703 || v:version == 703 && has("patch541")
 endif
 
 if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+  setglobal tags-=./tags tags^=./tags;
 endif
 
-if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
-  set shell=/usr/bin/env\ bash
+if &shell =~# 'fish$'
+  set shell=/bin/bash
 endif
 
 set autoread
+set fileformats+=mac
 
 if &history < 1000
   set history=1000
@@ -79,10 +79,9 @@ if !empty(&viminfo)
   set viminfo^=!
 endif
 set sessionoptions-=options
-set viewoptions-=options
 
 " Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^Eterm'
+if &t_Co == 8 && $TERM !~# '^linux'
   set t_Co=16
 endif
 
@@ -91,11 +90,36 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
-if empty(mapcheck('<C-U>', 'i'))
-  inoremap <C-U> <C-G>u<C-U>
-endif
-if empty(mapcheck('<C-W>', 'i'))
-  inoremap <C-W> <C-G>u<C-W>
-endif
+inoremap <C-U> <C-G>u<C-U>
+" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
+let s:opam_share_dir = system("opam config var share")
+let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
 
-" vim:set ft=vim et sw=2:
+let s:opam_configuration = {}
+
+function! OpamConfOcpIndent()
+  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
+endfunction
+let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
+
+function! OpamConfOcpIndex()
+  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
+endfunction
+let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
+
+function! OpamConfMerlin()
+  let l:dir = s:opam_share_dir . "/merlin/vim"
+  execute "set rtp+=" . l:dir
+endfunction
+let s:opam_configuration['merlin'] = function('OpamConfMerlin')
+
+let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
+let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
+let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
+for tool in s:opam_packages
+  " Respect package order (merlin should be after ocp-index)
+  if count(s:opam_available_tools, tool) > 0
+    call s:opam_configuration[tool]()
+  endif
+endfor
+" ## end of OPAM user-setup addition for vim / base ## keep this line
