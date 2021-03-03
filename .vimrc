@@ -173,3 +173,9 @@ function! Smart_TabComplete()
 endfunction
 
 inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+
+call plug#begin('~/.vim/plugged')
+
+" Put plugins here
+
+call plug#end()
