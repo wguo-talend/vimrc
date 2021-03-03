@@ -172,10 +172,19 @@ function! Smart_TabComplete()
   endif
 endfunction
 
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 call plug#begin('~/.vim/plugged')
 
-" Put plugins here
+Plug 'tpope/vim-sensible'
+Plug 'lifepillar/vim-mucomplete'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-obsession'
+Plug 'raimondi/delimitmate'
+Plug 'ctrlpvim/ctrlp.vim'
 
 call plug#end()
