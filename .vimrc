@@ -146,3 +146,5 @@ endfunction
 silent function! WINDOWS()
     return  (has('win32') || has('win64'))
 endfunction
+
+set omnifunc=syntaxcomplete#Complete
