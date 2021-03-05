@@ -148,6 +148,7 @@ silent function! WINDOWS()
 endfunction
 
 set omnifunc=syntaxcomplete#Complete
+set spell
 
 " Smart mapping for tab completion
 " https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
