@@ -148,7 +148,7 @@ silent function! WINDOWS()
 endfunction
 
 set omnifunc=syntaxcomplete#Complete
-set spell
+" set spell
 
 " Smart mapping for tab completion
 " https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
@@ -211,12 +211,12 @@ let g:ale_list_window_size = 5
 
 set background=dark
 colorscheme solarized8
-if has("gui_running")
-  if has("gui_gtk2")
+if has('gui_running')
+  if has('gui_gtk2')
     set guifont=Dank\ Mono\ Regular:h12
-  elseif has("gui_macvim")
+  elseif has('gui_macvim')
     set guifont=Dank\ Mono\ Regular:h12
-  elseif has("gui_win32")
+  elseif has('gui_win32')
     set guifont=Dank\ Mono\ Regular:h12
   endif
 endif
