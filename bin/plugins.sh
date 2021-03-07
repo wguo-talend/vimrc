@@ -10,6 +10,8 @@ git_plugins=( "tpope/vim-sensible" "lifepillar/vim-mucomplete" "tpope/vim-fugiti
 
 linter_plugins=( "dense-analysis/ale" )
 
+color_plugins=( "lifepillar/vim-solarized8" )
+
 for plugin in "${git_plugins[@]}"; do
     folder=$(echo $plugin | cut -d'/' -f2)
     if [ ! -d "$folder" ]; then
@@ -22,6 +24,17 @@ for plugin in "${git_plugins[@]}"; do
 done
 
 for plugin in "${linter_plugins[@]}"; do
+    folder=$(echo $plugin | cut -d'/' -f2)
+    if [ ! -d "$folder" ]; then
+        git clone --depth 1 "https://github.com/$plugin.git"
+    else
+        cd "$folder"
+        git fetch origin
+        cd ..
+    fi
+done
+
+for plugin in "${color_plugins[@]}"; do
     folder=$(echo $plugin | cut -d'/' -f2)
     if [ ! -d "$folder" ]; then
         git clone --depth 1 "https://github.com/$plugin.git"
