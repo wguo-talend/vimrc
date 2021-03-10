@@ -136,6 +136,7 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set number
 
 silent function! OSX()
     return has('macunix')
