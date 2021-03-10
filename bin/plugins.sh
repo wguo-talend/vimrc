@@ -10,7 +10,7 @@ git_plugins=( "tpope/vim-sensible" "lifepillar/vim-mucomplete" "tpope/vim-fugiti
 
 linter_plugins=( "dense-analysis/ale" )
 
-color_plugins=( "lifepillar/vim-solarized8" )
+color_plugins=( "lifepillar/vim-solarized8" "reedes/vim-colors-pencil" "andreypopp/vim-colors-plain")
 
 extra_plugins=( "junegunn/vim-easy-align" "mg979/vim-visual-multi" "junegunn/goyo.vim" "junegunn/limelight.vim" "itchyny/lightline.vim" "ryanoasis/vim-devicons" "mhinz/vim-startify" "pechorin/any-jump.vim" "machakann/vim-highlightedyank" "reedes/vim-thematic" "airblade/vim-gitgutter" "SirVer/ultisnips" "honza/vim-snippets" )
 
