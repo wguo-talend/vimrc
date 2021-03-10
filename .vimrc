@@ -136,6 +136,7 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set number
 
 silent function! OSX()
     return has('macunix')
@@ -191,6 +192,20 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dense-analysis/ale'
 
 Plug 'lifepillar/vim-solarized8'
+
+Plug 'junegunn/vim-easy-align'
+Plug 'mg979/vim-visual-multi'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
+Plug 'pechorin/any-jump.vim'
+Plug 'machakann/vim-highlightedyank'
+Plug 'reedes/vim-thematic'
+Plug 'airblade/vim-gitgutter'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 call plug#end()
 
