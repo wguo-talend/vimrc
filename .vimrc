@@ -190,6 +190,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'dense-analysis/ale'
 
+Plug 'lifepillar/vim-solarized8'
+
 call plug#end()
 
 augroup FiletypeGroup
@@ -226,3 +228,15 @@ let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
 let g:ale_list_window_size = 5
+
+set background=dark
+colorscheme solarized8
+if has('gui_running')
+  if has('gui_gtk2')
+    set guifont=Dank\ Mono\ Regular:h12
+  elseif has('gui_macvim')
+    set guifont=Dank\ Mono\ Regular:h12
+  elseif has('gui_win32')
+    set guifont=Dank\ Mono\ Regular:h12
+  endif
+endif
