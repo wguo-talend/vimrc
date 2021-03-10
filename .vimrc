@@ -244,8 +244,6 @@ let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
 let g:ale_list_window_size = 5
 
-set background=dark
-colorscheme solarized8
 if has('gui_running')
   if has('gui_gtk2')
     set guifont=Dank\ Mono\ Regular:h12
@@ -255,3 +253,104 @@ if has('gui_running')
     set guifont=Dank\ Mono\ Regular:h12
   endif
 endif
+
+nnoremap <silent> <leader>z :Goyo<cr>
+augroup no_distraction
+    autocmd! User GoyoEnter Limelight
+    autocmd! User GoyoLeave Limelight!
+augroup END
+
+" lightline configuration
+set laststatus=2
+if !has('gui_running')
+    set t_Co=256
+endif
+set noshowmode
+let g:lightline = {
+\ 'colorscheme': 'wombat',
+\ }
+
+" Normal mode: Jump to definition under cursore
+nnoremap <leader>j :AnyJump<CR>
+"
+" " Visual mode: jump to selected text in visual mode
+xnoremap <leader>j :AnyJumpVisual<CR>
+"
+" " Normal mode: open previous opened file (after jump)
+nnoremap <leader>ab :AnyJumpBack<CR>
+"
+" " Normal mode: open last closed search window again
+nnoremap <leader>al :AnyJumpLastResults<CR>
+
+" Show line numbers in search rusults
+let g:any_jump_list_numbers = 0
+"
+" " Auto search references
+let g:any_jump_references_enabled = 1
+"
+" " Auto group results by filename
+let g:any_jump_grouping_enabled = 0
+
+if LINUX() || OSX()
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+else
+    set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+endif
+
+let g:thematic#themes = {
+\ 'solarized8'  : { 'typeface': 'Dank Mono',
+\                  'font-size': 18,
+\                },
+\ 'plain_dark'  : { 'colorscheme': 'plain',
+\                  'background': 'dark',
+\                  'typeface': 'Dank Mono',
+\                  'font-size': 18,
+\                },
+\ 'plain_light'  : { 'colorscheme': 'plain',
+\                  'background': 'light',
+\                  'typeface': 'Dank Mono',
+\                  'font-size': 18,
+\                },
+\ 'pencil_dark' :{ 'colorscheme': 'pencil',
+\                  'background': 'dark',
+\                  'airline-theme': 'badwolf',
+\                  'ruler': 1,
+\                  'laststatus': 0,
+\                  'typeface': 'Source Code Pro Light',
+\                  'font-size': 20,
+\                  'transparency': 10,
+\                  'linespace': 8,
+\                },
+\ 'pencil_lite' :{ 'colorscheme': 'pencil',
+\                  'background': 'light',
+\                  'airline-theme': 'light',
+\                  'laststatus': 0,
+\                  'ruler': 1,
+\                  'typeface': 'Source Code Pro',
+\                  'fullscreen': 1,
+\                  'transparency': 0,
+\                  'font-size': 20,
+\                  'linespace': 6,
+\                },
+\ }
+
+nnoremap <Leader>T :ThematicNext<CR>
+nnoremap <Leader>D :Thematic pencil_dark<CR>
+nnoremap <Leader>L :Thematic pencil_lite<CR>
+
+let g:thematic#theme_name = 'pencil_dark'
+
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+\ 'file': '\v\.(exe|so|dll)$',
+\ 'link': 'some_bad_symbolic_links',
+\ }
+
+" Trigger configuration. You need to change this to something other than <tab>
+" if you use one of the following:
+" " - https://github.com/Valloric/YouCompleteMe
+" " - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger='<c-c>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-z>'
