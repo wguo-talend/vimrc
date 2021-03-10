@@ -207,6 +207,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
+Plug 'reedes/vim-colors-pencil'
+Plug 'andreypopp/vim-colors-plain'
+
 call plug#end()
 
 augroup FiletypeGroup
