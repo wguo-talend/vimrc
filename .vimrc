@@ -64,7 +64,7 @@ if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
-if v:version > 703 || v:version == 703 && has("patch541")
+if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j " Delete comment character when joining commented lines
 endif
 
@@ -96,7 +96,7 @@ if &t_Co == 8 && $TERM !~# '^Eterm'
 endif
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &runtimepath) ==# ''
   runtime! macros/matchit.vim
 endif
 
@@ -136,6 +136,7 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set number
 
 silent function! OSX()
     return has('macunix')
@@ -148,6 +149,7 @@ silent function! WINDOWS()
 endfunction
 
 set omnifunc=syntaxcomplete#Complete
+set spell
 
 " Smart mapping for tab completion
 " https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
@@ -172,4 +174,186 @@ function! Smart_TabComplete()
   endif
 endfunction
 
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-sensible'
+Plug 'lifepillar/vim-mucomplete'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-obsession'
+Plug 'raimondi/delimitmate'
+Plug 'ctrlpvim/ctrlp.vim'
+
+Plug 'dense-analysis/ale'
+
+Plug 'lifepillar/vim-solarized8'
+
+Plug 'junegunn/vim-easy-align'
+Plug 'mg979/vim-visual-multi'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
+Plug 'pechorin/any-jump.vim'
+Plug 'machakann/vim-highlightedyank'
+Plug 'reedes/vim-thematic'
+Plug 'airblade/vim-gitgutter'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+Plug 'reedes/vim-colors-pencil'
+Plug 'andreypopp/vim-colors-plain'
+
+call plug#end()
+
+augroup FiletypeGroup
+    autocmd!
+    au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+augroup END
+
+let g:ale_linter_aliases = {
+            \ 'jsx': ['css', 'javascript'],
+            \ 'vue': ['eslint', 'vls']
+            \}
+
+let g:ale_linters = {
+            \ 'jsx': ['stylelint', 'eslint'],
+            \ 'rust': ['analyzer', 'cargo', 'rls'],
+            \ 'vim': ['vint'],
+            \ 'zsh': ['shell', 'shellcheck'],
+            \}
+
+
+let g:ale_fixers = {
+            \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+            \ 'rust': ['rustfmt'],
+            \}
+
+let g:ale_fix_on_save = 1
+
+let g:ale_sign_column_always = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
+let g:ale_list_window_size = 5
+
+if has('gui_running')
+  if has('gui_gtk2')
+    set guifont=Dank\ Mono\ Regular:h12
+  elseif has('gui_macvim')
+    set guifont=Dank\ Mono\ Regular:h12
+  elseif has('gui_win32')
+    set guifont=Dank\ Mono\ Regular:h12
+  endif
+endif
+
+nnoremap <silent> <leader>z :Goyo<cr>
+augroup no_distraction
+    autocmd! User GoyoEnter Limelight
+    autocmd! User GoyoLeave Limelight!
+augroup END
+
+" lightline configuration
+set laststatus=2
+if !has('gui_running')
+    set t_Co=256
+endif
+set noshowmode
+let g:lightline = {
+\ 'colorscheme': 'wombat',
+\ }
+
+" Normal mode: Jump to definition under cursore
+nnoremap <leader>j :AnyJump<CR>
+"
+" " Visual mode: jump to selected text in visual mode
+xnoremap <leader>j :AnyJumpVisual<CR>
+"
+" " Normal mode: open previous opened file (after jump)
+nnoremap <leader>ab :AnyJumpBack<CR>
+"
+" " Normal mode: open last closed search window again
+nnoremap <leader>al :AnyJumpLastResults<CR>
+
+" Show line numbers in search rusults
+let g:any_jump_list_numbers = 0
+"
+" " Auto search references
+let g:any_jump_references_enabled = 1
+"
+" " Auto group results by filename
+let g:any_jump_grouping_enabled = 0
+
+if LINUX() || OSX()
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+else
+    set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+endif
+
+let g:thematic#themes = {
+\ 'solarized8'  : { 'typeface': 'Dank Mono',
+\                  'font-size': 18,
+\                },
+\ 'plain_dark'  : { 'colorscheme': 'plain',
+\                  'background': 'dark',
+\                  'typeface': 'Dank Mono',
+\                  'font-size': 18,
+\                },
+\ 'plain_light'  : { 'colorscheme': 'plain',
+\                  'background': 'light',
+\                  'typeface': 'Dank Mono',
+\                  'font-size': 18,
+\                },
+\ 'pencil_dark' :{ 'colorscheme': 'pencil',
+\                  'background': 'dark',
+\                  'airline-theme': 'badwolf',
+\                  'ruler': 1,
+\                  'laststatus': 0,
+\                  'typeface': 'Source Code Pro Light',
+\                  'font-size': 20,
+\                  'transparency': 10,
+\                  'linespace': 8,
+\                },
+\ 'pencil_lite' :{ 'colorscheme': 'pencil',
+\                  'background': 'light',
+\                  'airline-theme': 'light',
+\                  'laststatus': 0,
+\                  'ruler': 1,
+\                  'typeface': 'Source Code Pro',
+\                  'fullscreen': 1,
+\                  'transparency': 0,
+\                  'font-size': 20,
+\                  'linespace': 6,
+\                },
+\ }
+
+nnoremap <Leader>T :ThematicNext<CR>
+nnoremap <Leader>D :Thematic pencil_dark<CR>
+nnoremap <Leader>L :Thematic pencil_lite<CR>
+
+let g:thematic#theme_name = 'pencil_dark'
+
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+\ 'file': '\v\.(exe|so|dll)$',
+\ 'link': 'some_bad_symbolic_links',
+\ }
+
+" Trigger configuration. You need to change this to something other than <tab>
+" if you use one of the following:
+" " - https://github.com/Valloric/YouCompleteMe
+" " - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger='<c-c>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-z>'
