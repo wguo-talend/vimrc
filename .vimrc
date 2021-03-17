@@ -113,6 +113,16 @@ endif
 " Environment
 " -----------
 
+set scrolloff=3
+set wrap
+set wm=2
+set textwidth=79
+set linebreak
+set nolist
+display+=lastline
+set tw=80
+set fo+=t
+
 " Encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -148,6 +158,19 @@ silent function! WINDOWS()
     return  (has('win32') || has('win64'))
 endfunction
 
+"" Copy/Paste/Cut
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+endif
+
+" use system clipboard
+" " https://anuragpeshne.github.io/essays/vim/7.html
+noremap y "*y
+noremap yy "*yy
+noremap Y "*y$
+noremap x "*x
+noremap dd "*dd
+
 set omnifunc=syntaxcomplete#Complete
 set spell
 
@@ -175,6 +198,9 @@ function! Smart_TabComplete()
 endfunction
 
 " inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+noremap D "*D
+
+set completefunc+=emoji#complete
 
 call plug#begin('~/.vim/plugged')
 
@@ -209,6 +235,11 @@ Plug 'honza/vim-snippets'
 
 Plug 'reedes/vim-colors-pencil'
 Plug 'andreypopp/vim-colors-plain'
+
+Plug 'reedes/vim-pencil', { 'for': ['text', 'notes', 'markdown', 'mkd'] }
+Plug 'reedes/vim-wordy', { 'for': ['text', 'notes', 'markdown', 'mkd'] }
+Plug 'reedes/vim-lexical', { 'for': ['text', 'notes', 'markdown', 'mkd'] }
+Plug 'junegunn/vim-emoji'
 
 call plug#end()
 
@@ -357,3 +388,46 @@ let g:ctrlp_custom_ignore = {
 let g:UltiSnipsExpandTrigger='<c-c>'
 let g:UltiSnipsJumpForwardTrigger='<c-b>'
 let g:UltiSnipsJumpBackwardTrigger='<c-z>'
+
+let g:wordy#ring = [
+\ 'weak',
+\ ['being', 'passive-voice', ],
+\ 'business-jargon',
+\ 'weasel',
+\ 'puffery',
+\ ['problematic', 'redundant', ],
+\ ['colloquial', 'idiomatic', 'similies', ],
+\ 'art-jargon',
+\ ['contractions', 'opinion', 'vague-time', 'said-synonyms', ],
+\ 'adjectives',
+\ 'adverbs',
+\ ]
+
+augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd,text,note call pencil#init()
+    \ | call lexical#init()
+    \ | call wordy#init()
+    " \ | call litecorrect#init()
+    " \ | call textobj#quote#init()
+    " \ | call textobj#sentence#init()
+    let g:pencil#wrapModeDefault = 'soft'
+    " set wrap
+augroup END
+
+noremap <silent> <F8> :<C-u>NextWordy<cr>
+xnoremap <silent> <F8> :<C-u>NextWordy<cr>
+inoremap <silent> <F8> <C-o>:NextWordy<cr>
+
+nnoremap <leader>e :setlocal spell spelllang=en_US<CR>
+nnoremap <leader>f :setlocal spell spelllang=fr_FR<CR>
+nnoremap <leader>s :setlocal spell spelllang=es_MX<CR>
+
+nnoremap <leader>g :exe ':silent !firefox % %'<CR>
+nnoremap <leader>b :exe ':silent !brave-browser % %'<CR>
+nnoremap <leader>c :exe ':silent !chromium-browser % %'<CR>
+
+" noremap ]s )s
+
+nnoremap <Leader>e :s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR>  
+nnoremap <Leader>E :%s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR> 
