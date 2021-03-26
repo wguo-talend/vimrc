@@ -115,13 +115,13 @@ endif
 
 set scrolloff=3
 set wrap
-set wm=2
+set wrapmargin=2
 set textwidth=79
 set linebreak
 set nolist
 display+=lastline
-set tw=80
-set fo+=t
+set textwidth=80
+set formatoptions+=t
 
 " Encoding
 set encoding=utf-8
@@ -429,5 +429,5 @@ nnoremap <leader>c :exe ':silent !chromium-browser % %'<CR>
 
 " noremap ]s )s
 
-nnoremap <Leader>e :s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR>  
-nnoremap <Leader>E :%s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR> 
+nnoremap <Leader>e :s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR>
+nnoremap <Leader>E :%s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR>
